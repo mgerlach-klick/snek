@@ -12,6 +12,16 @@ I won't tell you what code to write, but we will break the implementation down i
 
 Feel free to use this project to learn a new programming language. Maybe you want to give Python or Ruby a try. Maybe you'd like to see why Max keeps raving about Clojure. Or maybe you just want to learn to program functionally in an- environment you're already confident in and you decide to write it in JS/Node. All of these are fine! I will provide some ES6/Node example solutions in the `solutions` folder, but if there is any way at all, try not to look at them!
 
+## Functional Programming Guidelines
+
+- Keep the core functions - especially those involving business logic - pure
+
+- Push state manipulations to the very boundaries of your application
+
+- Your main functions should simply pipe data through your pure functions
+
+- Keep your functions short
+
 ## Requirements
 
 ### MacOS
