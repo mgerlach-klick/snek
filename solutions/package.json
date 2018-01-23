@@ -1,0 +1,11 @@
+{
+  "name": "snek",
+  "version": "1.0.0",
+  "description": "",
+  "main": "challenge1.js",
+  "author": "mgerlach@klick.com",
+  "dependencies": {
+    "ramda": "^0.25.0",
+    "request": "^2.83.0"
+  }
+}
