@@ -5,6 +5,7 @@
   "main": "challenge1.js",
   "author": "mgerlach@klick.com",
   "dependencies": {
+    "mocha": "^5.0.0",
     "ramda": "^0.25.0",
     "request": "^2.83.0"
   }
