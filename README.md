@@ -58,6 +58,8 @@ Try to follow these guidelines for your application:
 
 ## Challenge 1
 
+In the first challenge, we will set the foundation for being able to display anything at all! We will start with just placing a few pixels, and then draw things with a background!
+
 - Write a program that does the same thing as the `curl` call from the *GameOfliveUIServer usage* section. Feel free to use a different colour or position!
 
 If you're doing this on NodeJS, I have good experience with the [request module](https://github.com/request/request). Make sure not to post this as form encoded and to send the right content-type!
@@ -65,7 +67,7 @@ If you're doing this on NodeJS, I have good experience with the [request module]
 - Now refactor your program into a function that takes any number of pixels and displays them. A pixel is a JSON structure with an `x`, a `y` and a `color`, like this: `{"x":3,"y":0,"color":"#ff0000"}`. Extra brownie points if you make it easy to just pass a single pixel as well.
 
 - Write a function that takes a number of pixels, and a background colour, and returns a full grid of pixels of the specified background color, plus the initially specified pixels.
-As an example, calling something like `sendToUI(fillBackground("#ffffff", [{x:0,y:0,"#ff0000"}]))` should fill the whole grid with white pixels and only the top-left most pixel should be red.
+As an example, calling something like `makeRequest(fillBackground("#ffffff", [{x:0,y:0,"#ff0000"}]))` should fill the whole grid with white pixels and only the top-left most pixel should be red.
 
 > **Note**: Please note that in my hypothetical `fillBackground` function we give the background colour first, and the arguments that change more often last. This is by design and a typical pattern in functional programming; it allows me to create a convenience function through partial application, such as
 ```
