@@ -6,11 +6,13 @@ Welcome to Snek! We will implement parts of this game:
 
 ![I spent a lot of my high school years doing this](assets/snek-nokia.gif)
 
+If you have never seen this game before you can play it here: <http://thecodeplayer.com/walkthrough/html5-game-tutorial-make-a-snake-game-using-html5-canvas-jquery> - the code is very simple but unabashedly imperative (that's the opposite of functional), so it will serve as a useful counter example!
+
 The challenge will be to implement the game in a functional manner. To reiterate, functional means to keep functions as pure as possible, i.e. to have no side-effects in them.
 
 I won't tell you what code to write, but we will break the implementation down into bite-sized mini goals. This will teach you how to build up an implementation from the bottom up, and to slowly evolve it into the final project.
 
-Feel free to use this project to learn a new programming language. Maybe you want to give Python or Ruby a try. Maybe you'd like to see why Max keeps raving about Clojure. Or maybe you just want to learn to program functionally in an- environment you're already confident in and you decide to write it in JS/Node. All of these are fine! I will provide some ES6/Node example solutions in the `solutions` folder, but if there is any way at all, try not to look at them!
+Feel free to use this project to learn a new programming language. Maybe you want to give Python or Ruby a try. Maybe you'd like to see why Max keeps raving about Clojure. Or maybe you just want to learn to program functionally in an environment you're already confident in and you decide to write it in JS/Node. All of these are fine! I will provide some ES6/Node example solutions in the `solutions` folder, but if there is any way at all, try not to look at them!
 
 ## Requirements
 
@@ -77,3 +79,33 @@ fillWhiteBackground([{x:0,y:0,"#ff0000"}])
 > to make my code more expressive and to save me from having to specify the white background colour in multiple places. Try to follow this pattern wherever you can!
 
 > Please also note that we are not creating side-effects in the `fillBackground` function, but we are instead manipulating data structures! This is the essence of functional programming!
+
+## Challenge 2
+If you have completed challenge 1 the same way that I have, you have been manipulating lists of pixels. If you look at my [solution to challenge 1](solutions/challenge1.js) you see how awkward this is getting when comparing and manipulating pixels. There is a better way, but it requires some refactoring: we will move to a different representation of the grid, from a pure list of pixels to a hashmap that allows us to address pixels by their `x` and `y` coordinates. The resulting structure will look like this:
+
+```js
+{
+"0 0": {"x": 0, "y": 0, "color": "#ff0000"},
+"1 0": {"x": 0, "y": 0, "color": "#ffffff"},
+....
+}
+```
+
+If your language doesn't require keys to be strings, all the better! You can use arrays with numbers in them and save yourself some string back-and-forth!
+
+Even so, some things are still easier expressed as lists, and the request needs to be populated with a list as well. This leads us to the first subchallenge:
+
+- create two functions `toGridmap`, which takes a list of pixels and returns a Gridmap as described above, and a `fromGridmap` function that does the same in reverse.
+
+These functions are important and I would like to make you familiarize yourself (if you haven't yet) with another concept: testing.
+
+For nodeJS we recommend *Mocha* and *Chai* as the test-runner and assertion libraries; here is an
+[introductory guide](http://mherman.org/blog/2015/09/10/testing-node-js-with-mocha-and-chai/). Once you have installed either this, or a testing library of your choice:
+
+- Write a few simple tests for the `toGridmap` and `fromGridmap` functions
+
+Lastly, we need to rewrite parts of our code to use the new functionality! You should start to see the first payoffs of the improved grid representation!
+
+- Change your code to use the `toGridmap` and `fromGridmap` functions. Feel free to write more tests to make sure that your functions still work!
+
+> **Note**: Functional programming is all about manipulating data. You can make your life significantly easier if you choose a good data representation of your domain!
