@@ -20,7 +20,7 @@ To get started, install a Java runtime. On MacOS you can do this by installing [
 
 Then download the canvas we will draw on. Download it here: <https://s3.amazonaws.com/max.public/GameOfLifeUIServer.jar>
 
-This was originally used to implement the Game of Life but it perfectly suited for any type of pixel-based cross-platform representation. You can start it by double-clicking the `GameOfLifeUIServer.jar` file. It will then open a pink window. If MacOS complains, you may have to open the `Security & Privacy` settings in your `System Preferences` and specifically allow the app to start.
+This was originally used to implement the Game of Life but it perfectly suited for any type of pixel-based cross-platform representation. You can start it by double-clicking the `GameOfLifeUIServer.jar` file. It will then open a pink window. If MacOS complains, you may have to open the `Security & Privacy` settings in your `System Preferences` and specifically allow the app to start - that is the *Open Anyway* button right on the first tab!
 
 
 ## GameOfLifeUIServer usage
