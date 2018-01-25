@@ -14,6 +14,16 @@ I won't tell you what code to write, but we will break the implementation down i
 
 Feel free to use this project to learn a new programming language. Maybe you want to give Python or Ruby a try. Maybe you'd like to see why Max keeps raving about Clojure. Or maybe you just want to learn to program functionally in an environment you're already confident in and you decide to write it in JS/Node. All of these are fine! I will provide some ES6/Node example solutions in the `solutions` folder, but if there is any way at all, try not to look at them!
 
+
+## Philosophy
+By virtue of me writing this, this is also an illustration of *Hoes Does Max Develop Programs?*. I am a strong proponent of evolving working programs, as opposed to starting with *The Grand Plan* and then implementing little disconnected pieces that will all work together perfectly once everything is in place. In my experience that never happens, requirements change under you, and a critical piece of the *Grand Plan* simply doesn't work as you expected. Evolving programs will not leave you in a pickle like that and feels a lot more satisfying as well, because you always have *something* that works.
+
+This cartoon summarizes this well:
+![Do this not that!](assets/likethis.jpg)
+
+If you are interested in reading more about this approach, have a look at this article:
+- <https://levelup.gitconnected.com/code-less-think-more-incrementally-98adee22df9b>
+
 ## Requirements
 
 To get started, install a Java runtime. On MacOS you can do this by installing [homebrew](https://brew.sh/) and running `brew cask install java8 `
