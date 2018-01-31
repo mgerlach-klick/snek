@@ -87,14 +87,15 @@ var readInput = (allowedInputs, cb) => {
     readline.emitKeypressEvents(process.stdin);
 
     function keyHandler(str, key) { // we name our function so we don't attach it multiple times!
-        if (key && r.contains(key.name, allowedInputs))
+        if (key && r.contains(key.name, allowedInputs)){
             console.log(key.name)
-        cb(key.name)
+            process.stdin.removeListener('keypress', keyHandler) //otherwise we attach a bunch of listeners!
+            cb(key.name)
+        }
     }
 
     process.stdin.setRawMode(true);
     process.stdin.on('keypress', keyHandler );
-    process.stdin.removeListener('keypress', keyHandler) //otherwise we attach a bunch of listeners!
 }
 
 var readArrowKeys = r.partial(readInput, [["left", "right", "up", "down"]])
