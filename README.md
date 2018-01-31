@@ -119,12 +119,16 @@ In this challenge we are starting to move our initial pixel around!
 
 You can use whatever keys you like, but I will assume the arrow keys on the keyboard. Your tasks are:
 
+- Create a function that moves a pixel left, right, up or down, depending on its input
+
+Please remember the separation between manipulating a data structure, and displaying a data structure! Keep the side effects at the edges of your application!
+
 - Write a function that reads a key and returns its value
 
 For nodeJS, take a look at
 [this stackoverflow question](https://stackoverflow.com/questions/5006821/nodejs-how-to-read-keystrokes-from-stdin) for some guidance. Also remember that this is an asynchronous operation in JS, and you will need to pass callbacks. In Python, it is the `raw_input()` function for Python2, and just `input()` for Python3. For everything else, you'll figure it out :)
 
 
-- Create a function (using the input function you just created) to move the pixel left, right, up and down, depening on the arrow key input.
+- Combine the two functions to move the pixel left, right, up and down, depening on the arrow key input
 
 Don't worry about timing or anything, just change the pixel according the the input, whenever it happens. Please keep in mind to do this functionally, i.e. don't change data structures, but instead build up new ones!
