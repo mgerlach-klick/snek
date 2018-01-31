@@ -58,7 +58,7 @@ Try to follow these guidelines for your application:
 
 # Challenges
 
-## Challenge 1
+## Challenge 1 - Displaying Pixels
 
 In the first challenge, we will set the foundation for being able to display anything at all! We will start with just placing a few pixels, and then draw things with a background!
 
@@ -80,7 +80,7 @@ fillWhiteBackground([{x:0,y:0,"#ff0000"}])
 
 > Please also note that we are not creating side-effects in the `fillBackground` function, but we are instead manipulating data structures! This is the essence of functional programming!
 
-## Challenge 2
+## Challenge 2 - Refactoring the Data Structure
 If you have completed challenge 1 the same way that I have, you have been manipulating lists of pixels. If you look at my [solution to challenge 1](solutions/challenge1.js) you see how awkward this is getting when comparing and manipulating pixels. There is a better way, but it requires some refactoring: we will move to a different representation of the grid, from a pure list of pixels to a hashmap that allows us to address pixels by their `x` and `y` coordinates. The resulting structure will look like this:
 
 ```js
@@ -109,3 +109,22 @@ Lastly, we need to rewrite parts of our code to use the new functionality! You s
 - Change your code to use the `toGridmap` and `fromGridmap` functions. Feel free to write more tests to make sure that your functions still work!
 
 > **Note**: Functional programming is all about manipulating data. You can make your life significantly easier if you choose a good data representation of your domain!
+
+
+
+
+## Challenge 3 - Moving the Pixel
+
+In this challenge we are starting to move our initial pixel around!
+
+You can use whatever keys you like, but I will assume the arrow keys on the keyboard. Your tasks are:
+
+- Write a function that reads a key and returns its value
+
+For nodeJS, take a look at
+[this stackoverflow question](https://stackoverflow.com/questions/5006821/nodejs-how-to-read-keystrokes-from-stdin) for some guidance. Also remember that this is an asynchronous operation in JS, and you will need to pass callbacks. In Python, it is the `raw_input()` function for Python2, and just `input()` for Python3. For everything else, you'll figure it out :)
+
+
+- Create a function (using the input function you just created) to move the pixel left, right, up and down, depening on the arrow key input.
+
+Don't worry about timing or anything, just change the pixel according the the input, whenever it happens. Please keep in mind to do this functionally, i.e. don't change data structures, but instead build up new ones!
