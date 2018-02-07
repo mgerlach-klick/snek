@@ -126,16 +126,16 @@ var movePixel = (direction, pixelPos) => {
 
 var displayGridmap = gm => makeRequest(fromGridmap(gm))
 
-var moveAndDisplayPixel = (direction, pixelPos) => {
-    var [newPos, world] = movePixel(direction, pixelPos)
-    displayGridmap(world)
-    return newPos
-}
+// var moveAndDisplayPixel = (direction, pixelPos) => {
+//     var [newPos, world] = movePixel(direction, pixelPos)
+//     displayGridmap(world)
+//     return newPos
+// }
 
 function moveAndDisplayPixelOnKeypress(pixelPos, direction) {
     var newPos = null
     if(direction) {
-        console.log(direction,"=>",newPos)
+        console.log(direction,"=>",[newPos ? newPos : pixelPos])
         var [newPos, world] = movePixel(direction, pixelPos)
         displayGridmap(world)
     }
