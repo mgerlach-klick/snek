@@ -45,6 +45,7 @@ var setPixel = (grid, pixel) => {
     return grid
 }
 
+
 var toGridmap = pixels => {
     assertIsArray(pixels)
 
@@ -82,7 +83,7 @@ var makeRequest = pixels => {
 }
 
 
-var readInput = (allowedInputs, cb) => {
+var readOneInputChar = (allowedInputs, cb) => {
     const readline = require('readline');
     readline.emitKeypressEvents(process.stdin);
 
@@ -98,7 +99,7 @@ var readInput = (allowedInputs, cb) => {
     process.stdin.on('keypress', keyHandler );
 }
 
-var readArrowKeys = r.partial(readInput, [["left", "right", "up", "down"]])
+var readArrowKeys = r.partial(readOneInputChar, [["left", "right", "up", "down"]])
 
 var calculatePixelPos = (direction, pixelPos) => {
     assertIsArray(pixelPos)
@@ -132,13 +133,19 @@ var moveAndDisplayPixel = (direction, pixelPos) => {
 }
 
 function moveAndDisplayPixelOnKeypress(pixelPos, direction) {
-
     var newPos = null
-    readArrowKeys(r.partial(moveAndDisplayPixel))
-    var newPos =
+    if(direction) {
+        console.log(direction,"=>",newPos)
+        var [newPos, world] = movePixel(direction, pixelPos)
+        displayGridmap(world)
+    }
+    console.log(">")
+    readArrowKeys(r.partial(moveAndDisplayPixelOnKeypress, [newPos ? newPos : pixelPos]))
+    // var newPos =
 }
 
 makeRequest(fromGridmap(fillBackground("#6495ed", [makePixel(12,12,"#00ff00")])))
+moveAndDisplayPixelOnKeypress([12,12], null)
 
 // ============ Tests ===============
 
