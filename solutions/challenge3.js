@@ -83,24 +83,26 @@ var makeRequest = pixels => {
 }
 
 
+// this function is a little tricky, especially since listeners persist.
+// This becomes an issue if we don't want to have a global listener and instead want to
+// just functionally 'read a key and do a thing'!
 var readOneInputChar = (allowedInputs, cb) => {
     const readline = require('readline');
     readline.emitKeypressEvents(process.stdin);
 
     function keyHandler(str, key) { // we name our function so we don't attach it multiple times!
-        if (key && r.contains(key.name, allowedInputs)){
-            console.log(key.name)
-            process.stdin.removeListener('keypress', keyHandler) //otherwise we attach a bunch of listeners!
+        if (key && r.contains(key.name, allowedInputs)){ // only listen for specific keys
+            process.stdin.removeListener('keypress', keyHandler) //remove yourself, otherwise we attach a bunch of listeners!
             cb(key.name)
         }
     }
-
     process.stdin.setRawMode(true);
     process.stdin.on('keypress', keyHandler );
 }
 
 var readArrowKeys = r.partial(readOneInputChar, [["left", "right", "up", "down"]])
 
+// calculate a new pixel position from a direction input and a current pixel
 var calculatePixelPos = (direction, pixelPos) => {
     assertIsArray(pixelPos)
     assert(pixelPos.length == 2)
@@ -117,7 +119,7 @@ var calculatePixelPos = (direction, pixelPos) => {
 }
 
 var movePixel = (direction, pixelPos) => {
-    var background = toGridmap(makeBlueBackground())
+    var background = toGridmap(makeBlueBackground()) // we just assume a blue background here!
     var [newX, newY]= calculatePixelPos(direction, pixelPos)
     var newPixel = makePixel(newX, newY, "#ff0000")
     var newState = setPixel(background, newPixel)
@@ -126,22 +128,15 @@ var movePixel = (direction, pixelPos) => {
 
 var displayGridmap = gm => makeRequest(fromGridmap(gm))
 
-// var moveAndDisplayPixel = (direction, pixelPos) => {
-//     var [newPos, world] = movePixel(direction, pixelPos)
-//     displayGridmap(world)
-//     return newPos
-// }
-
 function moveAndDisplayPixelOnKeypress(pixelPos, direction) {
-    var newPos = null
-    if(direction) {
-        console.log(direction,"=>",[newPos ? newPos : pixelPos])
+    var newPos = null // this is a bit of hack, I apologize. On the other hand we end up with a nice, recursive, asynchronous function!
+    if(direction) { // this is so we can call this function initially.
+        console.log(direction,"=>", pixelPos)
         var [newPos, world] = movePixel(direction, pixelPos)
         displayGridmap(world)
     }
-    console.log(">")
+    console.log("use your arrow keys to move the pixel: ")
     readArrowKeys(r.partial(moveAndDisplayPixelOnKeypress, [newPos ? newPos : pixelPos]))
-    // var newPos =
 }
 
 makeRequest(fromGridmap(fillBackground("#6495ed", [makePixel(12,12,"#00ff00")])))
