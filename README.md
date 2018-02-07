@@ -73,8 +73,8 @@ As an example, calling something like `makeRequest(fillBackground("#ffffff", [{x
 
 > **Note**: Please note that in my hypothetical `fillBackground` function we give the background colour first, and the arguments that change more often last. This is by design and a typical pattern in functional programming; it allows me to create a convenience function through partial application, such as
 ```
-const fillWhiteBackground = partial(fillBackground, "#ffffff")
-fillWhiteBackground([{x:0,y:0,"#ff0000"}])
+const fillWhiteBackground = partial(fillBackground, ["#ffffff"])
+fillWhiteBackground([{x:0,y:0,color:"#ff0000"}])
 ```
 > to make my code more expressive and to save me from having to specify the white background colour in multiple places. Try to follow this pattern wherever you can!
 
