@@ -132,3 +132,19 @@ For nodeJS, take a look at
 - Combine the two functions to move the pixel left, right, up and down, depening on the arrow key input
 
 Don't worry about timing or anything, just change the pixel according the the input, whenever it happens. Please keep in mind to do this functionally, i.e. don't change data structures, but instead build up new ones!
+
+
+## Challenge 4 - Building the Snake
+
+In this challenge we are making our snake look like a snake! We will start by defining the initial snake as 3 elements and hardcode the starting position. Then we will move the snake around instead of just a single pixel.
+
+Here is a thought that may help you wrap your head around how to move the snake:
+
+> To move the snake it is enough to create a new **head** pixel and drop the **tail** pixel.
+
+If you do this, it will look like the snake is moving!
+
+Also, by now our 'step-by-step' approach has probably resulted in a pretty cluttered solution. By
+now you probably understand the problem a lot better and you can go ahead and refactor your solution and clean it up a little. Don't forget to write a few tests so you don't accidentally break any functionality while refactoring!
+
+> **Note:** The understanding of the problem space you have gained is, in my opinion, one of the greatest benefits of an iterative approach to development.

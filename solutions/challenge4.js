@@ -24,8 +24,6 @@ var makeBackground = color => {
     return toGridmap(grid)
 }
 
-var makeBlueBackground = r.partial(makeBackground, ["#6495ed"])
-
 // this function has seen the greatest improvement from the data structure refactoring!
 // We can now simply merge the two gridmaps to easily 'overwrite' pixels
 var fillBackground = (color, pixels) => {
@@ -34,14 +32,13 @@ var fillBackground = (color, pixels) => {
     return r.merge(background, pixelMap)
 }
 
-var getCoordinate = (px) => px.x + " " + px.y // get an easily comparable "identity" of a pixel
-
 // it would be nicer if this worked without mutation, but that isn't
 // straightforward in javascript. Since this function gets called from within a
 // function that makes a copy of the original datastructure, we are okay with
 // this
 var setPixel = (grid, pixel) => {
     assertIsObject(grid)
+    var getCoordinate = (px) => px.x + " " + px.y // get an easily comparable "identity" of a pixel
     grid[getCoordinate(pixel)] = pixel
     return grid
 }
@@ -115,7 +112,7 @@ var calculateNewHead = (direction, pixel) => {
     case "down": return makePixel( x, y+1, color )
     case "c": return process.exit()
 
-    default: throw("That is a direction we don't support!")
+    default: throw("That is a direction we don't support!") // should never happen!
     }
 }
 
@@ -128,44 +125,37 @@ var moveSnake = (direction, snake) => {
 
     return [newSnake, fillBackground(BACKGROUND_COLOR, newSnake)]
 }
-var displayGridmap = gm => makeRequest(fromGridmap(gm))
+
 
 function moveAndDisplaySnakeOnKeypress(snake, direction) {
     var newSnake = null // this is a bit of hack, I apologize. On the other hand we end up with a nice, recursive, asynchronous function!
     if(direction) { // this is so we can call this function initially.
         var [newSnake, world] = moveSnake(direction, snake)
+        var displayGridmap = gm => makeRequest(fromGridmap(gm))
         displayGridmap(world)
     }
     readArrowKeys(r.partial(moveAndDisplaySnakeOnKeypress, [newSnake ? newSnake : snake]))
 }
 
-var initialSnake = [makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00"), makePixel(10,12,"#00ff00")]
-makeRequest(fromGridmap(fillBackground("#6495ed", initialSnake)))
-console.log("use your arrow keys to move the pixel: ")
-console.log("press 'c' to exit")
-moveAndDisplaySnakeOnKeypress(initialSnake, null)
+function main(){
+    var initialSnake = [makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00"), makePixel(10,12,"#00ff00")]
+    makeRequest(fromGridmap(fillBackground("#6495ed", initialSnake)))
+    console.log("use your arrow keys to move the pixel: ")
+    console.log("press 'c' to exit")
+    moveAndDisplaySnakeOnKeypress(initialSnake, null)
+}
+
+main() // GO GO GO!
 
 // ============ Tests ===============
 
-var test_toGridmap = _ => {
-    console.log("it should return a map")
-    var gridMap = toGridmap([])
-    assert.deepEqual(gridMap ,{})
-
-    console.log("it should work for one element")
-    let pixel = makePixel(0,0,0)
-    let pixels = [pixel]
-    let grid = toGridmap(pixels)
-    assert.deepEqual(grid, {"0 0": pixel})
+var test_moveSnake = () => {
+    var initialSnake = [makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00"), makePixel(10,12,"#00ff00")]
+    var [snakeRight, _] = moveSnake("right", initialSnake)
+    assert.deepEqual(snakeRight , [ makePixel(13,12,"#00ff00"), makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00")])
 }
 
-var test_fromGridmap = _ => {
-    console.log("it should produce the right map")
-    let pixels = [makePixel(0,0,0), makePixel(1,1,1), makePixel(2,2,3)]
 
-    console.log("it should roundtrip")
-    assert.deepEqual(pixels, fromGridmap(toGridmap(pixels)))
-}
 
 // This only works when executing these tests in a node console. You probably don't want to do this but use a proper test runner!
 var runtests = () => {
