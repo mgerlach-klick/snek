@@ -148,3 +148,13 @@ Also, by now our 'step-by-step' approach has probably resulted in a pretty clutt
 now you probably understand the problem a lot better and you can go ahead and refactor your solution and clean it up a little. Don't forget to write a few tests so you don't accidentally break any functionality while refactoring!
 
 > **Note:** The understanding of the problem space you have gained is, in my opinion, one of the greatest benefits of an iterative approach to development.
+
+
+## Challenge 5 - Game Over
+
+Now we will define a few game-over conditions! The conditions are:
+
+- the game is over if the snake bites itself
+- the game is over if the snake runs into the wall
+
+In the spirit of small functions I suggest you create functions for each of these. As for handling the game over condition you have a few options. You can throw an exception, you can return a "game over" value, you can set a global variable, etc. This is a good time to think about when and why each of these approaches are appropriate! Keep also in mind that it's perfectly fine to iterate: You can start by doing the easy thing and throw exceptions on all the game-over conditions, and as soon as you have a better overview of where your program is going you can move to a different approach.
