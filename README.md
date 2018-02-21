@@ -33,6 +33,11 @@ Then download the canvas we will draw on. Download it here: <https://s3.amazonaw
 This was originally used to implement the Game of Life but it perfectly suited for any type of pixel-based cross-platform representation. You can start it by double-clicking the `GameOfLifeUIServer.jar` file. It will then open a pink window. If MacOS complains, you may have to open the `Security & Privacy` settings in your `System Preferences` and specifically allow the app to start - that is the *Open Anyway* button right on the first tab!
 
 
+## Functional programming libraries
+
+I strongly recommend that you use a functional programming library when doing these challenges; they will make your life much easier and knowing one (or several) will be very beneficial in your day-to-day job as well. For JS/node I strongly recommend [RamdaJS](http://ramdajs.com/), for Python I like [Toolz](https://toolz.readthedocs.io/en/latest/api.html), and if you are doing these challenges with another language you are on your own :) But do try to find one!
+
+
 ## GameOfLifeUIServer usage
 The GameOfLifeUIServer exposes a REST api on `http://localhost:5000`. It only supports one command: A `POST` to `/`. This post sets one or more pixels at specific coordinates to a certain colour. A pixel is defined as a JSON object with the values `x`,`y`, and `color`. X and Y are integers (0/0 is the upper left corner), and `color` is a CSS hex color string such as `#ff0000`. The `POST` expects a JSON object with the key `cells` that has the value of an array of pixel objects. By default the grid displayed has 25x25 pixels.
 
