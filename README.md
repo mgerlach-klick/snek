@@ -163,3 +163,7 @@ Now we will define a few game-over conditions! The conditions are:
 - the game is over if the snake runs into the wall
 
 In the spirit of small functions I suggest you create functions for each of these. As for handling the game over condition you have a few options. You can throw an exception, you can return a "game over" value, you can set a global variable, etc. This is a good time to think about when and why each of these approaches are appropriate! Keep also in mind that it's perfectly fine to iterate: You can start by doing the easy thing and throw exceptions on all the game-over conditions, and as soon as you have a better overview of where your program is going you can move to a different approach.
+
+## Challenge 6 - Apples
+
+It's time to place apples, or whatever it is that our little snek eats! Write a function that randomly places one pixel in a specific colour. Make sure the pixel appears on the board, but outside of the snek. Check if the snek eats the apple (if head pixel position is equal to the apple position!), and if so, make the snek grow longer. This will keep you busy for a while!
