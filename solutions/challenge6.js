@@ -26,13 +26,19 @@ var makeBackground = color => {
 
 // this function has seen the greatest improvement from the data structure refactoring!
 // We can now simply merge the two gridmaps to easily 'overwrite' pixels
-var fillBackground = (color, pixels) => {
-    var background = makeBackground(color)
-    var pixelMap = toGridmap(pixels)
-    return r.merge(background, pixelMap)
+var createWorld = (world, snake, apple) => {
+    //merge all the things together
+    var w = r.is(Array, world) ? toGridmap(world) : world
+    var s = r.is(Array, snake) ? toGridmap(snake) : snake
+    var a = toGridmap([apple])
+
+    var newWorld = r.mergeAll([w,s,a])
+    return newWorld
 }
 
 var getCoordinate = (px) => px.x + " " + px.y // get an easily comparable "identity" of a pixel
+
+var isSameCoordinate = (p1,p2) => getCoordinate(p1) == getCoordinate(p2)
 
 // it would be nicer if this worked without mutation, but that isn't
 // straightforward in javascript. Since this function gets called from within a
@@ -119,23 +125,31 @@ var calculateNewHead = (direction, pixel) => {
 
 var snakeHead = (snake) => r.head(snake)
 
-var moveSnake = (direction, snake) => {
+var moveSnake = (direction, snake, apple) => {
     var newSnakeBody = r.dropLast(1, snake)
     var oldSnakeHead = snakeHead(snake)
     var newSnakeHead = calculateNewHead(direction, oldSnakeHead)
-    var newSnake = r.concat([newSnakeHead], newSnakeBody)
-
-    return [newSnake, fillBackground(BACKGROUND_COLOR, newSnake)]
+    var snakeAteApple =  isSnakeEatsApple(snake, direction, apple)
+    var newSnake = snakeAteApple ? r.concat([newSnakeHead], snake) : r.concat([newSnakeHead], newSnakeBody)
+    var world = makeBackground(BACKGROUND_COLOR)
+    var newApple = snakeAteApple ? placeApple(newSnake, world) : apple
+    var newWorld = createWorld(world, newSnake, newApple)
+    return [newSnake, newApple, newWorld]
 }
 
+var isSnakeEatsApple = (snake, direction, apple) => {
+    var head = calculateNewHead(direction, snakeHead(snake))
+    return isSameCoordinate(head, apple)
+}
+
+
 var isSnakeRunsIntoWall = (snake, direction) => {
-    var [newSnake, world] = moveSnake(direction, snake)
-    var head = snakeHead(newSnake)
+    var head = calculateNewHead(direction,snakeHead(snake))
     return head.x < 0 || head.x >= WIDTH || head.y < 0 || head.y >= HEIGHT
 }
 
-var isSnakeEatsItself = (snake, direction) => {
-    var [newSnake, world] = moveSnake(direction, snake)
+var isSnakeEatsItself = (snake, apple, direction) => {
+    var [newSnake, newApple, newWorld] = moveSnake(direction, snake, apple)
 
     // if the new head has the same coordinates as any of the tail pixels, the snake ate itself!
     var snakeCoords = r.map(getCoordinate, newSnake)
@@ -144,9 +158,9 @@ var isSnakeEatsItself = (snake, direction) => {
     return r.any(r.equals(head), tail)
 }
 
-var isGameOver = (snake, direction) => {
+var isGameOver = (snake, apple, direction) => {
     const areAnyTrue = r.any(r.equals(true)) // remember that ramda auto-curries, so it's perfectly fine to only provide *some* of the arguments
-    return areAnyTrue([ isSnakeEatsItself(snake, direction)
+    return areAnyTrue([ isSnakeEatsItself(snake, apple, direction)
                        , isSnakeRunsIntoWall(snake, direction)])
 }
 
@@ -167,69 +181,31 @@ var placeApple = (snake, world) => {
     }
 
     var apple = makeApple(applePixel)
-    var newWorld = setPixel(world, apple)
-    return newWorld
+    return apple
 }
 
 
-function moveAndDisplaySnakeOnKeypress(snake, direction) {
+function moveAndDisplaySnakeOnKeypress(snake, apple, direction) {
     var newSnake = null // this is a bit of hack, I apologize. On the other hand we end up with a nice, recursive, asynchronous function!
     if(direction) { // this is so we can call this function initially.
-        if (isGameOver(snake,direction))
+        if (isGameOver(snake, apple, direction))
             throw "GAME OVER! You suuuuuck!!!" // This is not a good solution but it works for now!
-        var [newSnake, world] = moveSnake(direction, snake)
-        var newWorld = placeApple(newSnake, world)
+        var [newSnake, newApple, newWorld] = moveSnake(direction, snake, apple)
         var displayGridmap = gm => makeRequest(fromGridmap(gm))
         displayGridmap(newWorld)
-        console.dir(newWorld)
     }
-    readArrowKeys(r.partial(moveAndDisplaySnakeOnKeypress, [newSnake ? newSnake : snake]))
+    readArrowKeys(r.partial(moveAndDisplaySnakeOnKeypress, [newSnake ? newSnake : snake, newApple ? newApple : apple]))
 }
 
 function main(){
     var initialSnake = [makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00"), makePixel(10,12,"#00ff00")]
-    makeRequest(fromGridmap(fillBackground("#6495ed", initialSnake)))
+    var world = makeBackground(BACKGROUND_COLOR)
+    var apple = placeApple(initialSnake, world)
+    var nextWorld = createWorld(world, initialSnake, apple)
+    makeRequest(fromGridmap(nextWorld))
     console.log("use your arrow keys to move the pixel: ")
     console.log("press 'c' to exit")
-    moveAndDisplaySnakeOnKeypress(initialSnake, null)
+    moveAndDisplaySnakeOnKeypress(initialSnake, apple, null)
 }
 
 main() // GO GO GO!
-
-// ============ Tests ===============
-
-var test_moveSnake = () => {
-    var initialSnake = [makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00"), makePixel(10,12,"#00ff00")]
-    var [snakeRight, _] = moveSnake("right", initialSnake)
-    assert.deepEqual(snakeRight , [ makePixel(13,12,"#00ff00"), makePixel(12,12,"#00ff00"), makePixel(11,12,"#00ff00")])
-}
-
-
-
-// This only works when executing these tests in a node console. You probably don't want to do this but use a proper test runner!
-var runtests = () => {
-    console.log("Running tests")
-
-    var g = global
-    var symbols = Object.keys(g)
-    var testNames = r.filter(sym => sym.startsWith("test_"), symbols)
-    var successful = 0
-    var failed = 0
-
-    testNames.forEach(testN => {
-        try {
-            let test = g[testN]
-            test()
-            console.log(testN+": ✓")
-            successful++;
-        } catch (ex) {
-            console.log(testN+": ✗✗✗")
-            console.log(ex.message)
-            failed++;
-        } finally {
-            console.log("---")
-            console.log("Successful: "+successful)
-            console.log("failed: "+failed)
-        }
-    })
-}
