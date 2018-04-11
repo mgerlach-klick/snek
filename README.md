@@ -26,7 +26,7 @@ If you are interested in reading more about this approach, have a look at this a
 
 ## Requirements
 
-To get started, install a Java runtime. On MacOS you can do this by installing [homebrew](https://brew.sh/) and running `brew cask install java8 `
+To get started, install a Java runtime. On MacOS you can do this by installing [homebrew](https://brew.sh/) and running `brew tap caskroom/versions && brew cask install java8 `
 
 Then download the canvas we will draw on. Download it here: <https://s3.amazonaws.com/max.public/GameOfLifeUIServer.jar>
 
